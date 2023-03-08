@@ -1,0 +1,1 @@
+# heylinda-react-native-clone
