@@ -1,10 +1,10 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { View } from "react-native";
 import { Button } from "react-native-paper";
-import { SettingsParamList } from "../../types";
+import { MainStackParamList } from "../../types";
 
 interface Props {
-  navigation: NativeStackNavigationProp<SettingsParamList, "SettingsScreen">;
+  navigation: NativeStackNavigationProp<MainStackParamList>;
 }
 
 export default function Settings({ navigation }: Props) {

@@ -3,35 +3,23 @@
  * https://reactnavigation.org/docs/typescript/
  */
 
-export type NO_PARAMS = undefined
+export type NO_PARAMS = undefined;
 export type RootStackParamList = {
-  Root: NO_PARAMS
-  NotFound: NO_PARAMS
-}
+  Root: NO_PARAMS;
+  NotFound: NO_PARAMS;
+};
 
 export type MainStackParamList = {
-  Main: NO_PARAMS
-  CompletedScreen: NO_PARAMS
-}
+  Main: NO_PARAMS;
+  CompletedScreen: NO_PARAMS;
+  AboutScreen: NO_PARAMS;
+  PlayScreen: {
+    id: string;
+  };
+};
 
 export type BottomTabParamList = {
-  Home: NO_PARAMS
-  Stats: NO_PARAMS
-  Settings: NO_PARAMS
-}
-
-export type HomeParamList = {
-  HomeScreen: NO_PARAMS
-  PlayScreen: {
-    id: string
-  }
-}
-
-export type StatsParamList = {
-  StatsScreen: NO_PARAMS
-}
-
-export type SettingsParamList = {
-  SettingsScreen: NO_PARAMS
-  AboutScreen: NO_PARAMS
-}
+  Home: NO_PARAMS;
+  Stats: NO_PARAMS;
+  Settings: NO_PARAMS;
+};

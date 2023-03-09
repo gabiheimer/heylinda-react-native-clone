@@ -1,135 +1,69 @@
-import { AntDesign as Icon } from '@expo/vector-icons'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import * as React from 'react'
-import { StyleSheet } from 'react-native'
+import { AntDesign as Icon } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as React from "react";
+import { StyleSheet } from "react-native";
 
-import Colors from '../constants/Colors'
-import HomeScreen from '../screens/Home'
-import PlayScreen from '../screens/Play'
-import SettingsScreen from '../screens/Settings'
-import StatsScreen from '../screens/Stats'
-import AboutPage from '../screens/Settings/About'
-import { BottomTabParamList, HomeParamList, SettingsParamList, StatsParamList } from '../types'
+import Colors from "../constants/Colors";
+import HomeScreen from "../screens/Home";
+import SettingsScreen from "../screens/Settings";
+import StatsScreen from "../screens/Stats";
+import { BottomTabParamList } from "../types";
 
-const BottomTab = createBottomTabNavigator<BottomTabParamList>()
+const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      screenOptions={{ tabBarActiveTintColor: Colors.tint, headerShown: false }}
+      screenOptions={{ tabBarActiveTintColor: Colors.tint, headerShown: true }}
     >
-      <BottomTab.Screen
-        name="Home"
-        component={TabOneNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="Stats"
-        component={StatsNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="Settings"
-        component={SettingsNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="setting" color={color} />,
-        }}
-      />
-    </BottomTab.Navigator>
-  )
-}
-
-function TabBarIcon(props: { name: React.ComponentProps<typeof Icon>['name']; color: string }) {
-  return <Icon size={25} style={styles.tabBarIcon} {...props} />
-}
-const HomeStack = createNativeStackNavigator<HomeParamList>()
-
-function TabOneNavigator() {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Group
+      <BottomTab.Group
         screenOptions={{
           headerStyle: styles.header,
           headerTitleStyle: styles.headerTitle,
           headerTintColor: Colors.white,
         }}
       >
-        <HomeStack.Screen
-          name="HomeScreen"
+        <BottomTab.Screen
+          name="Home"
           component={HomeScreen}
           options={{
-            headerTitle: 'Home',
+            tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           }}
         />
-        <HomeStack.Screen
-          name="PlayScreen"
-          component={PlayScreen}
+        <BottomTab.Screen
+          name="Stats"
+          component={StatsScreen}
           options={{
-            headerBackTitle: 'Back',
-            headerTitle: 'Play',
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="calendar" color={color} />
+            ),
           }}
         />
-      </HomeStack.Group>
-    </HomeStack.Navigator>
-  )
+        <BottomTab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="setting" color={color} />
+            ),
+          }}
+        />
+      </BottomTab.Group>
+    </BottomTab.Navigator>
+  );
 }
 
-const StatsStack = createNativeStackNavigator<StatsParamList>()
-
-function StatsNavigator() {
-  return (
-    <StatsStack.Navigator>
-      <StatsStack.Screen
-        name="StatsScreen"
-        component={StatsScreen}
-        options={{
-          headerTitle: 'Stats',
-          headerStyle: styles.header,
-          headerTitleStyle: styles.headerTitle,
-        }}
-      />
-    </StatsStack.Navigator>
-  )
-}
-
-const SettingsStack = createNativeStackNavigator<SettingsParamList>()
-
-function SettingsNavigator() {
-  return (
-    <SettingsStack.Navigator>
-      <SettingsStack.Screen
-        name="SettingsScreen"
-        component={SettingsScreen}
-        options={{
-          headerTitle: 'Settings',
-          headerStyle: styles.header,
-          headerTitleStyle: styles.headerTitle,
-        }}
-      />
-      <SettingsStack.Screen
-        name="AboutScreen"
-        component={AboutPage}
-        options={{
-          headerTintColor: Colors.white,
-          headerBackTitle: 'Back',
-          headerTitle: 'About',
-          headerStyle: styles.header,
-          headerTitleStyle: styles.headerTitle,
-        }}
-      />
-    </SettingsStack.Navigator>
-  )
+function TabBarIcon(props: {
+  name: React.ComponentProps<typeof Icon>["name"];
+  color: string;
+}) {
+  return <Icon size={25} style={styles.tabBarIcon} {...props} />;
 }
 
 const styles = StyleSheet.create({
   headerTitle: {
-    fontWeight: '600',
+    fontWeight: "600",
     color: Colors.white,
     fontSize: 16,
   },
@@ -139,4 +73,4 @@ const styles = StyleSheet.create({
   tabBarIcon: {
     marginBottom: -3,
   },
-})
+});

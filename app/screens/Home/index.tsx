@@ -1,10 +1,10 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { View, Text } from "react-native";
 import { Button } from "react-native-paper";
-import { HomeParamList } from "../../types";
+import { MainStackParamList } from "../../types";
 
 interface Props {
-  navigation: NativeStackNavigationProp<HomeParamList, "HomeScreen">;
+  navigation: NativeStackNavigationProp<MainStackParamList>;
 }
 
 export default function Home({ navigation }: Props) {
