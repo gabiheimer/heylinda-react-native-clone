@@ -3,6 +3,8 @@
  * https://reactnavigation.org/docs/typescript/
  */
 
+import { Meditation } from "./data/meditations";
+
 export type NO_PARAMS = undefined;
 export type RootStackParamList = {
   Root: NO_PARAMS;
@@ -15,6 +17,7 @@ export type MainStackParamList = {
   AboutScreen: NO_PARAMS;
   PlayScreen: {
     id: string;
+    updateFavourites: (meditation: Meditation) => void;
   };
 };
 

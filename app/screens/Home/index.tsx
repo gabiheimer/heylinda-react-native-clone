@@ -30,6 +30,16 @@ export default function Home({ navigation }: Props) {
     setFavourites(storedFavourites);
   }
 
+  function updateFavourites(meditation: Meditation): void {
+    if (favourites.includes(meditation)) {
+      const updatedFavs = favourites.filter((fav) => fav.id !== meditation.id);
+      setFavourites(updatedFavs);
+    } else {
+      const updatedFavs = [...favourites, meditation];
+      setFavourites(updatedFavs);
+    }
+  }
+
   useEffect(() => {
     initFavourites();
   }, []);
@@ -43,7 +53,12 @@ export default function Home({ navigation }: Props) {
         showsHorizontalScrollIndicator={false}
         data={popular}
         renderItem={(item) => (
-          <MeditationCard item={item} isPopular navigation={navigation} />
+          <MeditationCard
+            item={item}
+            isPopular
+            navigation={navigation}
+            updateFavourites={updateFavourites}
+          />
         )}
         keyExtractor={({ id }) => id}
       />
@@ -54,7 +69,11 @@ export default function Home({ navigation }: Props) {
         showsHorizontalScrollIndicator={false}
         data={anxiety}
         renderItem={(item) => (
-          <MeditationCard item={item} navigation={navigation} />
+          <MeditationCard
+            item={item}
+            navigation={navigation}
+            updateFavourites={updateFavourites}
+          />
         )}
         keyExtractor={({ id }) => id}
       />
@@ -65,7 +84,11 @@ export default function Home({ navigation }: Props) {
         showsHorizontalScrollIndicator={false}
         data={sleep}
         renderItem={(item) => (
-          <MeditationCard item={item} navigation={navigation} />
+          <MeditationCard
+            item={item}
+            navigation={navigation}
+            updateFavourites={updateFavourites}
+          />
         )}
         keyExtractor={({ id }) => id}
       />
@@ -78,7 +101,11 @@ export default function Home({ navigation }: Props) {
             showsHorizontalScrollIndicator={false}
             data={favourites}
             renderItem={(item) => (
-              <MeditationCard item={item} navigation={navigation} />
+              <MeditationCard
+                item={item}
+                navigation={navigation}
+                updateFavourites={updateFavourites}
+              />
             )}
             keyExtractor={({ id }) => id}
           />

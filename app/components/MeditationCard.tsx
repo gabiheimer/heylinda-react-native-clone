@@ -12,12 +12,14 @@ interface Props {
   item: ListRenderItemInfo<Meditation>;
   isPopular?: boolean;
   navigation: NativeStackNavigationProp<MainStackParamList>;
+  updateFavourites: (meditation: Meditation) => void;
 }
 
 export default function MeditationCard({
   item: { item: meditationItem },
   isPopular = false,
   navigation,
+  updateFavourites,
 }: Props) {
   const textColor = Colors.text;
 
@@ -38,6 +40,7 @@ export default function MeditationCard({
       onPress={() =>
         navigation.navigate("PlayScreen", {
           id: meditationItem.id,
+          updateFavourites,
         })
       }
     >
