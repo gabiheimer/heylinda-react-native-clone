@@ -13,7 +13,9 @@ export type RootStackParamList = {
 
 export type MainStackParamList = {
   Main: NO_PARAMS;
-  CompletedScreen: NO_PARAMS;
+  CompletedScreen: {
+    totalSessions: number;
+  };
   AboutScreen: NO_PARAMS;
   PlayScreen: {
     id: string;

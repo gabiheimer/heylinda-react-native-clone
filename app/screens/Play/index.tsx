@@ -67,8 +67,11 @@ export default function PlayScreen({ route, navigation }: Props) {
 
   async function updateActivity(duration: number): Promise<void> {
     const today = dayjs().format("YYYY-MM-DD");
-    await Storage.updateActivity(today, duration);
-    navigation.replace("CompletedScreen");
+    const activity = await Storage.updateActivity(today, duration);
+    navigation.replace("CompletedScreen", {
+      totalSessions: [...activity.values()].flatMap((session) => session)
+        .length,
+    });
   }
 
   const onPlaybackStatusUpdate = useCallback(
