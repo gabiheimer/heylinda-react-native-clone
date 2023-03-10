@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { Text, FlatList, StyleSheet } from "react-native";
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export default function Home({ navigation }: Props) {
+  const isFocused = useIsFocused();
   const [favourites, setFavourites] = useState<Meditation[]>([]);
 
   async function getFavourites(): Promise<void> {
@@ -29,12 +31,8 @@ export default function Home({ navigation }: Props) {
   }
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", async () => {
-      getFavourites();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+    getFavourites();
+  }, [isFocused]);
 
   return (
     <Screen scroll>

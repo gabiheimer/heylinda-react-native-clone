@@ -8,8 +8,7 @@ import { AntDesign as Icon } from "@expo/vector-icons";
 import Calendar from "./Calendar";
 import Storage from "../../storage/storage";
 import dayjs from "dayjs";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { MainStackParamList } from "../../types";
+import { useIsFocused } from "@react-navigation/native";
 
 const getQuote = (): { quote: string; author: string } => {
   const max = quotes.length - 1;
@@ -24,11 +23,8 @@ const getQuote = (): { quote: string; author: string } => {
   };
 };
 
-interface Props {
-  navigation: NativeStackNavigationProp<MainStackParamList>;
-}
-
-export default function StatsScreen({ navigation }: Props) {
+export default function StatsScreen() {
+  const isFocused = useIsFocused();
   const [markedDates, setMarkedDates] = useState<string[]>([]);
   const [totalSessions, setTotalSessions] = useState<number>(0);
   const [listenedStat, setListenedStat] = useState("");
@@ -94,12 +90,8 @@ export default function StatsScreen({ navigation }: Props) {
   }
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", async () => {
-      getCalendarData();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+    getCalendarData();
+  }, [isFocused]);
 
   return (
     <>

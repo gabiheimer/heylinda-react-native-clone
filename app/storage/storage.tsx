@@ -24,7 +24,13 @@ export default class Storage {
 
   static async updateFavourites(meditationId: string): Promise<void> {
     const favourites = await this.getFavourites();
-    const updatedFavs = [...favourites, meditationId];
+    let updatedFavs;
+
+    if (favourites.includes(meditationId)) {
+      updatedFavs = favourites.filter((id) => id !== meditationId);
+    } else {
+      updatedFavs = [...favourites, meditationId];
+    }
 
     try {
       await AsyncStorage.setItem(
