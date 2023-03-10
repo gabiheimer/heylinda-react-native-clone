@@ -72,4 +72,8 @@ export default class Storage {
 
     return activity;
   }
+
+  static async clearStorage(): Promise<void> {
+    await AsyncStorage.clear();
+  }
 }
