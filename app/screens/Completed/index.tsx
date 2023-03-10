@@ -40,9 +40,9 @@ export default function Completed({ navigation, route }: Props) {
         onPress={onPressDonate}
         style={styles.button}
         mode="contained"
-        color={primaryColor}
+        color={Colors.white}
       >
-        Donate
+        <Text style={styles.donateText}>Donate</Text>
       </Button>
       <Button
         onPress={onPressSkip}
@@ -85,8 +85,15 @@ const styles = StyleSheet.create({
     padding: 8,
     width: "100%",
     marginBottom: 20,
+    color: Colors.primary,
   },
   skipButton: {
     borderColor: Colors.white,
+    backgroundColor: Colors.primary,
+  },
+  donateText: {
+    color: Colors.primary,
+    fontWeight: "bold",
+    letterSpacing: 0.5,
   },
 });
