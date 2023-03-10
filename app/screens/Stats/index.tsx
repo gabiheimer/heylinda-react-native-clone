@@ -42,18 +42,17 @@ export default function StatsScreen() {
     const now = new Date();
     let curDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     let curDateString = dayjs(curDate).format("YYYY-MM-DD");
-    let curStreak = 0;
+    let curStreak = activity.has(curDateString) ? 1 : 0;
 
-    if (!activity.size) {
-      setStreak(0);
-      return;
-    }
+    curDate = new Date(curDate.getTime());
+    curDate.setDate(curDate.getDate() - 1);
+    curDateString = dayjs(curDate).format("YYYY-MM-DD");
 
     while (activity.has(curDateString)) {
       curStreak++;
-      let yesterday = new Date(curDate.getTime());
-      yesterday.setDate(curDate.getDate() - 1);
-      curDateString = dayjs(yesterday).format("YYYY-MM-DD");
+      curDate = new Date(curDate.getTime());
+      curDate.setDate(curDate.getDate() - 1);
+      curDateString = dayjs(curDate).format("YYYY-MM-DD");
     }
 
     setStreak(curStreak);

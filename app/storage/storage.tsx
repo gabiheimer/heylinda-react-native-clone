@@ -1,5 +1,3 @@
-// TODO: implement storage functions
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default class Storage {
@@ -59,10 +57,6 @@ export default class Storage {
     duration: number
   ): Promise<Map<string, number[]>> {
     let activity = await this.getActivity();
-
-    if (!activity.has(date)) {
-      activity = new Map<string, number[]>();
-    }
 
     const durations = activity.get(date) ?? [];
 

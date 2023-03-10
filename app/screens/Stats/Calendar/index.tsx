@@ -16,15 +16,17 @@ export default function Calendar({ markedDates }: Props) {
 
   const formattedMarkedDates = () => {
     const today = dayjs().format("YYYY-MM-DD");
-    let result = { [today]: { marked: true } };
-    markedDates.forEach((date) => {
-      result = {
-        ...result,
-        [date]: {
-          marked: true,
-        },
+    let result: { [x: string]: { selected: boolean } | { marked: boolean } } =
+      {};
+
+    markedDates.reduce((obj, date) => {
+      obj[date] = {
+        selected: true,
       };
-    });
+      return obj;
+    }, result);
+
+    result[today] = { marked: true };
 
     return result;
   };
