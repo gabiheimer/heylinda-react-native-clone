@@ -12,6 +12,7 @@ import LoadingScreen from "../../components/LoadingScreen";
 import Screen from "../../components/Screen";
 import FavouriteButton from "../../components/FavouriteButton";
 import PlayerControls from "./PlayerControls";
+import dayjs from "dayjs";
 
 type PlayRouteProp = RouteProp<MainStackParamList, "PlayScreen">;
 type PlayNavProp = NativeStackNavigationProp<MainStackParamList>;
@@ -64,10 +65,9 @@ export default function PlayScreen({ route, navigation }: Props) {
     setIsFavourited(!isFavourited);
   };
 
-  async function updateActivity(): Promise<void> {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDay());
-    const activity = await Storage.updateActivity(today, durationMills);
+  async function updateActivity(duration: number): Promise<void> {
+    const today = dayjs().format("YYYY-MM-DD");
+    await Storage.updateActivity(today, duration);
     navigation.replace("CompletedScreen");
   }
 
@@ -85,7 +85,7 @@ export default function PlayScreen({ route, navigation }: Props) {
         }
         if (playbackStatus.didJustFinish) {
           setIsPlaying(false);
-          updateActivity();
+          updateActivity(playbackStatus.durationMillis ?? 0);
         }
       }
     },

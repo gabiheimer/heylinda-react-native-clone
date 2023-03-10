@@ -24,7 +24,7 @@ export default function MainNavigator() {
           name="CompletedScreen"
           component={CompletedScreen}
           options={{
-            headerShown: false,
+            headerShown: true,
             headerTitle: "Completed",
           }}
         />

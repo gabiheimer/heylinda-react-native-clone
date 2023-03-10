@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default class Storage {
   private static prefix = "meditation";
   private static favouritesKey = `${this.prefix}.favourites`;
+  private static activityKey = `${this.prefix}.activity`;
 
   static async getFavourites(): Promise<string[]> {
     try {
@@ -12,7 +13,6 @@ export default class Storage {
       const favouritedIds = JSON.parse(storedFavs ?? "[]");
       return favouritedIds;
     } catch (error) {
-      console.log(error);
       return [];
     }
   }
@@ -36,10 +36,40 @@ export default class Storage {
     }
   }
 
+  static async getActivity(): Promise<Map<string, number[]>> {
+    try {
+      const storedActivity = await AsyncStorage.getItem(this.activityKey);
+      const jsonRes = JSON.parse(storedActivity ?? "{}");
+      const res = new Map<string, number[]>(Object.entries(jsonRes));
+      return res;
+    } catch (error) {
+      console.log(error);
+      return new Map();
+    }
+  }
+
   static async updateActivity(
-    today: Date,
+    date: string,
     duration: number
-  ): Promise<Map<Date, number>> {
-    return new Map();
+  ): Promise<Map<string, number[]>> {
+    let activity = await this.getActivity();
+
+    if (!activity.has(date)) {
+      activity = new Map<string, number[]>();
+    }
+
+    const durations = activity.get(date) ?? [];
+
+    activity.set(date, [...durations, duration]);
+
+    const activityObj = Object.fromEntries(activity);
+
+    try {
+      await AsyncStorage.setItem(this.activityKey, JSON.stringify(activityObj));
+    } catch (error) {
+      console.log(error);
+    }
+
+    return activity;
   }
 }

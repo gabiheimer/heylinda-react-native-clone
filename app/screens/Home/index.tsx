@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Text, FlatList, StyleSheet } from "react-native";
 import MeditationCard from "../../components/MeditationCard";
 import Screen from "../../components/Screen";
-import Colors from "../../constants/Colors";
 import {
   anxiety,
   Meditation,
@@ -30,8 +29,12 @@ export default function Home({ navigation }: Props) {
   }
 
   useEffect(() => {
-    getFavourites();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", async () => {
+      getFavourites();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <Screen scroll>
@@ -42,12 +45,7 @@ export default function Home({ navigation }: Props) {
         showsHorizontalScrollIndicator={false}
         data={popular}
         renderItem={(item) => (
-          <MeditationCard
-            item={item}
-            isPopular
-            navigation={navigation}
-            updateFavourites={getFavourites}
-          />
+          <MeditationCard item={item} isPopular navigation={navigation} />
         )}
         keyExtractor={({ id }) => id}
       />
@@ -58,11 +56,7 @@ export default function Home({ navigation }: Props) {
         showsHorizontalScrollIndicator={false}
         data={anxiety}
         renderItem={(item) => (
-          <MeditationCard
-            item={item}
-            navigation={navigation}
-            updateFavourites={getFavourites}
-          />
+          <MeditationCard item={item} navigation={navigation} />
         )}
         keyExtractor={({ id }) => id}
       />
@@ -73,11 +67,7 @@ export default function Home({ navigation }: Props) {
         showsHorizontalScrollIndicator={false}
         data={sleep}
         renderItem={(item) => (
-          <MeditationCard
-            item={item}
-            navigation={navigation}
-            updateFavourites={getFavourites}
-          />
+          <MeditationCard item={item} navigation={navigation} />
         )}
         keyExtractor={({ id }) => id}
       />
@@ -90,11 +80,7 @@ export default function Home({ navigation }: Props) {
             showsHorizontalScrollIndicator={false}
             data={favourites}
             renderItem={(item) => (
-              <MeditationCard
-                item={item}
-                navigation={navigation}
-                updateFavourites={getFavourites}
-              />
+              <MeditationCard item={item} navigation={navigation} />
             )}
             keyExtractor={({ id }) => id}
           />

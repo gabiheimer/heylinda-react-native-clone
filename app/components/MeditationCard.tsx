@@ -13,14 +13,12 @@ interface Props {
   item: ListRenderItemInfo<Meditation>;
   isPopular?: boolean;
   navigation: NativeStackNavigationProp<MainStackParamList>;
-  updateFavourites: () => Promise<void>;
 }
 
 export default function MeditationCard({
   item: { item: meditationItem },
   isPopular = false,
   navigation,
-  updateFavourites,
 }: Props) {
   const textColor = Colors.text;
 
@@ -34,14 +32,6 @@ export default function MeditationCard({
     const filePath = await getMeditationFilePath(meditationItem.uri);
     await FileSystem.downloadAsync(meditationItem.uri, filePath);
   }
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", async () => {
-      updateFavourites();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
 
   return (
     <Card

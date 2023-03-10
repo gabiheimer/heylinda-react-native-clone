@@ -6,6 +6,10 @@ import Colors from "../../constants/Colors";
 import quotes from "../../data/quotes";
 import { AntDesign as Icon } from "@expo/vector-icons";
 import Calendar from "./Calendar";
+import Storage from "../../storage/storage";
+import dayjs from "dayjs";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { MainStackParamList } from "../../types";
 
 const getQuote = (): { quote: string; author: string } => {
   const max = quotes.length - 1;
@@ -20,21 +24,82 @@ const getQuote = (): { quote: string; author: string } => {
   };
 };
 
-export default function StatsScreen() {
-  const [markedDates, setMarkedDates] = useState([]);
-  const [totalSessions, setTotalSessions] = useState(0);
-  const [listenedStat, setListenedStat] = useState(0);
+interface Props {
+  navigation: NativeStackNavigationProp<MainStackParamList>;
+}
+
+export default function StatsScreen({ navigation }: Props) {
+  const [markedDates, setMarkedDates] = useState<string[]>([]);
+  const [totalSessions, setTotalSessions] = useState<number>(0);
+  const [listenedStat, setListenedStat] = useState("");
   const [streak, setStreak] = useState(0);
   const primary = Colors.primary;
   const quote = getQuote();
 
+  function updateTotalSessions(storedActivity: Map<string, number[]>) {
+    const values = [...storedActivity.values()];
+    const totalSessionsValue = values.flatMap((session) => session).length;
+    setTotalSessions(totalSessionsValue);
+  }
+
+  function updateStreak(activity: Map<string, number[]>) {
+    const now = new Date();
+    let curDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let curDateString = dayjs(curDate).format("YYYY-MM-DD");
+    let curStreak = 0;
+
+    if (!activity.size) {
+      setStreak(0);
+      return;
+    }
+
+    while (activity.has(curDateString)) {
+      curStreak++;
+      let yesterday = new Date(curDate.getTime());
+      yesterday.setDate(curDate.getDate() - 1);
+      curDateString = dayjs(yesterday).format("YYYY-MM-DD");
+    }
+
+    setStreak(curStreak);
+  }
+
+  function updateListenedStat(activity: Map<string, number[]>) {
+    const values = [...activity.values()];
+    const totalMillis =
+      activity.size === 0
+        ? 0
+        : values
+            .flatMap((meditationDuration) => meditationDuration)
+            .reduce((accTime, sessionTime) => accTime + sessionTime, 0);
+
+    let minutes = Math.floor(totalMillis / 60000);
+    const hours = Math.floor(minutes / 60);
+    minutes = minutes % 60;
+
+    if (hours > 0 && minutes > 0) {
+      setListenedStat(`${hours}h ${minutes}m`);
+    } else if (hours > 0) {
+      setListenedStat(`${hours} hour${hours == 1 ? "" : "s"}`);
+    } else {
+      setListenedStat(`${minutes} min${minutes == 1 ? "" : "s"}`);
+    }
+  }
+
   async function getCalendarData(): Promise<void> {
-    // TODO: get data
+    const storedActivity = await Storage.getActivity();
+    setMarkedDates([...storedActivity.keys()]);
+    updateTotalSessions(storedActivity);
+    updateStreak(storedActivity);
+    updateListenedStat(storedActivity);
   }
 
   useEffect(() => {
-    getCalendarData();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", async () => {
+      getCalendarData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <>
