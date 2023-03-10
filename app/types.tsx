@@ -17,7 +17,6 @@ export type MainStackParamList = {
   AboutScreen: NO_PARAMS;
   PlayScreen: {
     id: string;
-    updateFavourites: (meditation: Meditation) => void;
   };
 };
 

@@ -38,7 +38,7 @@ function msToTime(s: number) {
 }
 
 export default function PlayScreen({ route, navigation }: Props) {
-  const { id, updateFavourites } = route.params;
+  const { id } = route.params;
   const [isLoadingAudio, setIsLoadingAudio] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState<Audio.Sound>();
@@ -62,7 +62,6 @@ export default function PlayScreen({ route, navigation }: Props) {
   const onFavourite = () => {
     Storage.updateFavourites(id);
     setIsFavourited(!isFavourited);
-    updateFavourites(meditation);
   };
 
   async function updateActivity(): Promise<void> {

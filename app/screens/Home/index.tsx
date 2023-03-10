@@ -19,10 +19,9 @@ interface Props {
 }
 
 export default function Home({ navigation }: Props) {
-  const textColor = Colors.text;
   const [favourites, setFavourites] = useState<Meditation[]>([]);
 
-  async function initFavourites(): Promise<void> {
+  async function getFavourites(): Promise<void> {
     const favouriteIds = await Storage.getFavourites();
     const storedFavourites = meditations.filter((meditation) =>
       favouriteIds.includes(meditation.id)
@@ -30,18 +29,8 @@ export default function Home({ navigation }: Props) {
     setFavourites(storedFavourites);
   }
 
-  function updateFavourites(meditation: Meditation): void {
-    if (favourites.includes(meditation)) {
-      const updatedFavs = favourites.filter((fav) => fav.id !== meditation.id);
-      setFavourites(updatedFavs);
-    } else {
-      const updatedFavs = [...favourites, meditation];
-      setFavourites(updatedFavs);
-    }
-  }
-
   useEffect(() => {
-    initFavourites();
+    getFavourites();
   }, []);
 
   return (
@@ -57,7 +46,7 @@ export default function Home({ navigation }: Props) {
             item={item}
             isPopular
             navigation={navigation}
-            updateFavourites={updateFavourites}
+            updateFavourites={getFavourites}
           />
         )}
         keyExtractor={({ id }) => id}
@@ -72,7 +61,7 @@ export default function Home({ navigation }: Props) {
           <MeditationCard
             item={item}
             navigation={navigation}
-            updateFavourites={updateFavourites}
+            updateFavourites={getFavourites}
           />
         )}
         keyExtractor={({ id }) => id}
@@ -87,7 +76,7 @@ export default function Home({ navigation }: Props) {
           <MeditationCard
             item={item}
             navigation={navigation}
-            updateFavourites={updateFavourites}
+            updateFavourites={getFavourites}
           />
         )}
         keyExtractor={({ id }) => id}
@@ -104,7 +93,7 @@ export default function Home({ navigation }: Props) {
               <MeditationCard
                 item={item}
                 navigation={navigation}
-                updateFavourites={updateFavourites}
+                updateFavourites={getFavourites}
               />
             )}
             keyExtractor={({ id }) => id}

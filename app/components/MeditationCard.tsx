@@ -7,12 +7,13 @@ import { MainStackParamList } from "../types";
 import getMeditationFilePath from "../utils/meditationUtils";
 import DownloadButton from "./DownloadButton";
 import * as FileSystem from "expo-file-system";
+import { useEffect } from "react";
 
 interface Props {
   item: ListRenderItemInfo<Meditation>;
   isPopular?: boolean;
   navigation: NativeStackNavigationProp<MainStackParamList>;
-  updateFavourites: (meditation: Meditation) => void;
+  updateFavourites: () => Promise<void>;
 }
 
 export default function MeditationCard({
@@ -34,15 +35,22 @@ export default function MeditationCard({
     await FileSystem.downloadAsync(meditationItem.uri, filePath);
   }
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      updateFavourites();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <Card
       style={styles.card}
-      onPress={() =>
+      onPress={async () => {
         navigation.navigate("PlayScreen", {
           id: meditationItem.id,
-          updateFavourites,
-        })
-      }
+        });
+      }}
     >
       <Card.Cover
         style={isPopular ? styles.popularImage : styles.cardImage}
